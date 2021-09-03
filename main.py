@@ -1,4 +1,4 @@
-from MapGrid import MapGrid
+from Node import Node
 import pygame
 from queue import PriorityQueue
 
@@ -17,21 +17,11 @@ WIN = pygame.display.set_mode((HEIGHT, WIDTH))
 # Sets the title of the window
 pygame.display.set_caption("A* Path Finding Algorithm")
 
-# colors
-RED = (255, 0, 0)
-GREEN = (0, 255, 0)
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-ORANGE = (255, 165, 0)
-GREY = (128, 128, 128)
-DARK_GREY = (169, 169, 169)
-PINK = (255, 130, 185)
-
 # Sets the background color
-WIN.fill(WHITE)
+WIN.fill((255, 255, 255))
 
 # Selects the map
-CURRENT_MAP = 4
+CURRENT_MAP = 1
 
 
 def get_map_array():
@@ -79,15 +69,15 @@ def get_end_position():
 def remove_green_color(grid):
     for array in grid:
         for square in array:
-            if square.color == GREEN:
+            if square.color == (0, 255, 0):
                 if square.cost == 1:
-                    square.set_color(WHITE)
+                    square.set_color((255, 255, 255))
                 elif square.cost == 2:
-                    square.set_color(GREY)
+                    square.set_color((128, 128, 128))
                 elif square.cost == 3:
-                    square.set_color(DARK_GREY)
+                    square.set_color((169, 169, 169))
                 elif square.cost == 4:
-                    square.set_color(BLACK)
+                    square.set_color((0, 0, 0))
 
 
 def make_grid(rows: int, width: int, map_array):
@@ -106,31 +96,31 @@ def make_grid(rows: int, width: int, map_array):
         for j in range(len(map_list)):
             list_value = map_list[j]
             if list_value == 1:
-                square = MapGrid(i, j, gap, rows)
+                square = Node(i, j, gap, rows)
             elif list_value == -1:
-                square = MapGrid(i, j, gap, rows)
+                square = Node(i, j, gap, rows)
                 square.make_wall()
             elif list_value == 2:
-                square = MapGrid(i, j, gap, rows)
-                square.set_color(GREY)
+                square = Node(i, j, gap, rows)
+                square.set_color((128, 128, 128))
             elif list_value == 3:
-                square = MapGrid(i, j, gap, rows)
-                square.set_color(DARK_GREY)
+                square = Node(i, j, gap, rows)
+                square.set_color((169, 169, 169))
             elif list_value == 4:
-                square = MapGrid(i, j, gap, rows)
-                square.set_color(BLACK)
+                square = Node(i, j, gap, rows)
+                square.set_color((0, 0, 0))
             square.cost = list_value
             grid[i].append(square)
 
     # Sets the color of the start position
     start_pos = get_start_position()
-    start_square: MapGrid = grid[start_pos[0]][start_pos[1]]
-    start_square.set_color(PINK)
+    start_square: Node = grid[start_pos[0]][start_pos[1]]
+    start_square.set_color((255, 130, 185))
 
     # Sets the color of the goal position
     end_position = get_end_position()
-    end_square: MapGrid = grid[end_position[0]][end_position[1]]
-    end_square.set_color(ORANGE)
+    end_square: Node = grid[end_position[0]][end_position[1]]
+    end_square.set_color((255, 165, 0))
 
     return grid
 
@@ -146,9 +136,10 @@ def draw_grid(win, rows, columns, width):
     """
     gap = (width // rows)
     for i in range(rows):
-        pygame.draw.line(win, GREY, (0, i * gap), (width, i * gap))
+        pygame.draw.line(win, (128, 128, 128), (0, i * gap), (width, i * gap))
         for j in range(columns):
-            pygame.draw.line(win, GREY, (j * gap, 0), (j * gap, width))
+            pygame.draw.line(win, (128, 128, 128),
+                             (j * gap, 0), (j * gap, width))
 
 
 def draw(win, grid, rows, columns, width):
@@ -161,7 +152,7 @@ def draw(win, grid, rows, columns, width):
     :param width: The width of the pygame window
     :return: None
     """
-    win.fill(WHITE)  # Sets the background of the window to white.
+    win.fill((255, 255, 255))  # Sets the background of the window to white.
 
     # Draws the lines in the pygame window.
     for row in grid:
@@ -213,14 +204,14 @@ def algorithm(draw, grid):
 
     # The start square
     start = get_start_position()
-    start_square: MapGrid = grid[start[0]][start[1]]
+    start_square: Node = grid[start[0]][start[1]]
 
     # todo check the run time of append and remove for lists in python
     hash_open_list = []
 
     # The end square
     end = get_end_position()
-    end_square: MapGrid = grid[end[0]][end[1]]
+    end_square: Node = grid[end[0]][end[1]]
 
     # Puts the start square in the open list.
     open_list.put((start_square.f_value, start_square))
@@ -228,7 +219,7 @@ def algorithm(draw, grid):
 
     while not open_list.empty():
         # The list is sorted by the lowest f value. The get removes the square from the Priority Queue.
-        current_square: MapGrid = open_list.get()[1]
+        current_square: Node = open_list.get()[1]
         hash_open_list.remove(current_square)
 
         # Adds the current square to the closed list.
@@ -267,7 +258,7 @@ def algorithm(draw, grid):
                     if square not in hash_open_list:
                         hash_open_list.append(square)
                         if square is not start_square and square is not end_square:
-                            square.set_color(GREEN)
+                            square.set_color((0, 255, 0))
 
                         # Sets the parent of the square. This enables backtracking.
                         square.set_parent(current_square)

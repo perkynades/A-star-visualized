@@ -1,21 +1,13 @@
 import pygame
 
-RED = (255, 0, 0)
-GREEN = (0, 255, 0)
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-ORANGE = (255, 165, 0)
-GREY = (128, 128, 128)
-LIGTH_PURPLE = (221, 160, 221)
 
-
-class MapGrid:
+class Node:
     def __init__(self, row, column, width, rows):
         self.row = row
         self.column = column
         self.x = column * width
         self.y = row * width
-        self.color = WHITE
+        self.color = (255, 255, 255)
         self.width = width
         self.rows = rows
 
@@ -45,21 +37,21 @@ class MapGrid:
         return [self.row, self.column]
 
     def is_map_grid_wall(self):
-        return self.color == RED
+        return self.color == (255, 0, 0)
 
     def make_wall(self):
-        self.color = RED
+        self.color = (255, 0, 0)
 
     def make_path(self):
-        self.color = LIGTH_PURPLE
+        self.color = (221, 160, 221)
 
     def update_neighbors(self, grid):
         self.neighbors = []
 
-        neighbor_up: MapGrid = grid[self.row - 1][self.column]
-        neighbor_down: MapGrid = grid[self.row + 1][self.column]
-        neighbor_right: MapGrid = grid[self.row][self.column + 1]
-        neighbor_left: MapGrid = grid[self.row][self.column - 1]
+        neighbor_up: Node = grid[self.row - 1][self.column]
+        neighbor_down: Node = grid[self.row + 1][self.column]
+        neighbor_right: Node = grid[self.row][self.column + 1]
+        neighbor_left: Node = grid[self.row][self.column - 1]
 
         if self.row > 0 and not neighbor_up.is_map_grid_wall():
             self.neighbors.append(neighbor_up)
