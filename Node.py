@@ -14,9 +14,9 @@ class Node:
         self.parent = None
         self.neighbors = []
 
-        self.g_value = 0  # The g-value of the square.
-        self.f_value = 0  # The f-value of the square.
-        self.h_value = 0  # THe h-value of the square.
+        self.g = 0
+        self.f = 0
+        self.h = 0
 
         self.cost = 1
 
