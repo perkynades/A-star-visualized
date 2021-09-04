@@ -36,7 +36,7 @@ class Node:
     def get_pos(self):
         return [self.row, self.column]
 
-    def is_map_grid_wall(self):
+    def is_node_wall(self):
         return self.color == (255, 0, 0)
 
     def make_wall(self):
@@ -53,16 +53,16 @@ class Node:
         neighbor_right: Node = grid[self.row][self.column + 1]
         neighbor_left: Node = grid[self.row][self.column - 1]
 
-        if self.row > 0 and not neighbor_up.is_map_grid_wall():
+        if self.row > 0 and not neighbor_up.is_node_wall():
             self.neighbors.append(neighbor_up)
 
-        if self.row < self.rows - 1 and not neighbor_down.is_map_grid_wall():
+        if self.row < self.rows - 1 and not neighbor_down.is_node_wall():
             self.neighbors.append(neighbor_down)
 
-        if self.column < self.rows - 1 and not neighbor_right.is_map_grid_wall():
+        if self.column < self.rows - 1 and not neighbor_right.is_node_wall():
             self.neighbors.append(neighbor_right)
 
-        if self.column > 0 and not neighbor_left.is_map_grid_wall():
+        if self.column > 0 and not neighbor_left.is_node_wall():
             self.neighbors.append(neighbor_left)
 
     def __lt__(self, other):
