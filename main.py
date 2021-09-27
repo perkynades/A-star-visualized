@@ -6,11 +6,13 @@ from Map import Map_Obj
 
 # The code is inspired by this "Coding train" challenge for the A* algorithm done in javascript
 # https://github.com/CodingTrain/website/tree/main/CodingChallenges/CC_051_astar/P5
+# The code is also inspiered from:
+# https://www.youtube.com/watch?v=JtiK0DOeI4A&ab_channel=TechWithTim
 
 width = 564
 heigth = 468
 
-current_map = 3
+current_map = 1
 
 window = pygame.display.set_mode((heigth, width))
 window.fill((255, 255, 255))
